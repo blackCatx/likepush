@@ -101,7 +101,7 @@ public class XmlHeadler extends DefaultHandler {
     	reader.setContentHandler( new XmlHeadler());
     	Resources res = stcontext.getResources();
     	AssetManager  am = res.getAssets();
-    	reader.parse( new InputSource(am.open("BossSDKGameConfig.xml")));
+//    	reader.parse( new InputSource(am.open("BossSDKGameConfig.xml")));
     	}catch(Exception e){
     		Log.e("xmlxml", "getXmlData!!!.......Exception."+ e.toString());
     		e.printStackTrace();

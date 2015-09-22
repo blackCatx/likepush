@@ -43,9 +43,9 @@ public class AppActivity extends Cocos2dxActivity {
 		Log.i("csdk", "app init------");
 
 
-		//get BossSdkGameConfig.xml
+		SdkGames.setContext(this);
 		XmlHeadler.setContext(this);
-		//Boss Sdk init
+
 
 		Log.v("TAG", "onCreate");
 
@@ -60,7 +60,7 @@ public class AppActivity extends Cocos2dxActivity {
 	}
 	
 	static {
-		System.loadLibrary("gangaOnlineUnityHelper");
+		
 		System.loadLibrary("cocos2dlua");
 	}
 	
