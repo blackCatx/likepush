@@ -66,7 +66,7 @@ public class AppActivity extends Cocos2dxActivity {
 	
 	public void onStop() {   
     	super.onStop();
-		
+	   //test
     }
     
     public void onDestroy() {    
