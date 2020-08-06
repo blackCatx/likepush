@@ -37,6 +37,8 @@ namespace ControlForm
         public static int skillCostTime = 2500;
         public static int teamCount = 2;
         public static int lastTeamPlayerCount = 10;
+        public static int xWater = 0;
+        public static int yWater = 0;
 
         private static Thread normalThread;
         private static Thread waterThread;
@@ -46,7 +48,7 @@ namespace ControlForm
         private static bool isRunning = false;
         private static bool isDrinking = false;
 
-        public static void InitHdc(int count, int x, int y, int len, int height, double costTime = 2.5)
+        public static void InitHdc(int count, int x, int y, int len, int height, double costTime = 2.5, int wx = 0, int wy = 0)
         {
             xSpace = len;
             ySpace = height;
@@ -244,10 +246,12 @@ namespace ControlForm
 
         public static void CheckWaterState()
         {
-            Point p = new Point(0, 0);
-            if (IsSkillReady(p))
+            Point diffP = new Point(17, 10);
+            Point p = new Point(xWater, yWater);
+            if (IsWaterReady(p))
             {
                 isDrinking = true;
+                SendKeyDownMsg((0x30));
                 Thread.Sleep(6000);
                 isDrinking = false;
             }
@@ -266,6 +270,21 @@ namespace ControlForm
                 return false;
             }
             return true;
+        }
+
+
+        public static bool IsWaterReady(Point p)
+        {
+            
+            int c = GetPixel(hdc, p);
+            int r = (c & 0xFF);
+            int g = (c & 0xFF00) / 256;
+            int b = (c & 0xFF0000) / 65536;
+            if (r > 120 || g > 110 || b > 100)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

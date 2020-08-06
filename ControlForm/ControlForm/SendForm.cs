@@ -28,6 +28,7 @@ namespace ControlForm
         private Thread normalThread;
         private bool isInit = false;
         private Dictionary<Keys, bool> moveKeyMap = new Dictionary<Keys, bool>();
+        private bool isRunning = false;
         Cutter cutter = null;
         private void BeginBtn_Click(object sender, EventArgs e)
         {
@@ -64,7 +65,6 @@ namespace ControlForm
             //             }/*)*/, 0);
             //             //获取receiveForm的按钮
             //             reShowBtnIP = FindWindowEx(receiveFormIP, new IntPtr(0), null, "Show");
-
             if (isInit) return;
             EnumWindows((IntPtr hwnd, int lParam) =>
             {
@@ -136,7 +136,9 @@ namespace ControlForm
             //             //将textbox1中信息发送到ReceiveForm中
             //             IntPtr reTextBoxIp = GetTextBoxIP(listWnd);
             //             Send(reTextBoxIp);//改参数最好为 
-            FindRedColor.InitHdc(int.Parse(textBox1.Text), int.Parse(textBox2.Text), int.Parse(textBox3.Text), int.Parse(textBox4.Text), int.Parse(textBox5.Text), double.Parse(textBox6.Text));
+            if (isInit) return;
+            isInit = true;
+            FindRedColor.InitHdc(int.Parse(textBox1.Text), int.Parse(textBox2.Text), int.Parse(textBox3.Text), int.Parse(textBox4.Text), int.Parse(textBox5.Text), double.Parse(textBox6.Text), int.Parse(textBox7.Text), int.Parse(textBox8.Text));
             FindRedColor.StartHealth();
         }
 
@@ -184,6 +186,8 @@ namespace ControlForm
             //             //点击ReceiveForm的sendBtn  弹出textbox中的信息
             //             SendMessage(reShowBtnIP, WM_CLICK, IntPtr.Zero, "0");
             FindRedColor.StopFindThread();
+            isInit = false;
+
 
         }
         private void ClearBtn_Click(object sender, EventArgs e)
@@ -364,6 +368,49 @@ namespace ControlForm
                 textBox3.Text = p.Y.ToString();
                 textBox4.Text = w.ToString();
                 textBox5.Text = h.ToString();
+            }
+        }
+
+        private void groupBox2_Enter(object sender, EventArgs e)
+        {                    }
+
+        private void label8_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label10_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            // 新建一个和屏幕大小相同的图片
+            Bitmap CatchBmp = new Bitmap(Screen.AllScreens[0].Bounds.Width, Screen.AllScreens[0].Bounds.Height);
+
+            // 创建一个画板，让我们可以在画板上画图
+            // 这个画板也就是和屏幕大小一样大的图片
+            // 我们可以通过Graphics这个类在这个空白图片上画图
+            Graphics g = Graphics.FromImage(CatchBmp);
+
+            // 把屏幕图片拷贝到我们创建的空白图片 CatchBmp中
+            g.CopyFromScreen(new Point(0, 0), new Point(0, 0), new Size(Screen.AllScreens[0].Bounds.Width, Screen.AllScreens[0].Bounds.Height));
+
+            // 创建截图窗体
+            cutter = new Cutter();
+
+            // 指示窗体的背景图片为屏幕图片
+            cutter.BackgroundImage = CatchBmp;
+            // 显示窗体
+            //cutter.Show();
+            // 如果Cutter窗体结束，则从剪切板获得截取的图片，并显示在聊天窗体的发送框中
+            if (cutter.ShowDialog() == DialogResult.OK)
+            {
+                Point p = cutter.DownPoint;
+                textBox7.Text = p.X.ToString();
+                textBox8.Text = p.Y.ToString();
+
             }
         }
     }
