@@ -26,7 +26,7 @@ namespace ControlForm
         private List<IntPtr> listWnd = new List<IntPtr>();
         private List<IntPtr> IntWnd = new List<IntPtr>();
         private Thread normalThread;
-        private bool isInit = false;
+        public static bool isInit = false;
         private Dictionary<Keys, bool> moveKeyMap = new Dictionary<Keys, bool>();
         private bool isRunning = false;
         Cutter cutter = null;
@@ -136,7 +136,6 @@ namespace ControlForm
             //             //将textbox1中信息发送到ReceiveForm中
             //             IntPtr reTextBoxIp = GetTextBoxIP(listWnd);
             //             Send(reTextBoxIp);//改参数最好为 
-            if (isInit) return;
             isInit = true;
             FindRedColor.InitHdc(int.Parse(textBox1.Text), int.Parse(textBox2.Text), int.Parse(textBox3.Text), int.Parse(textBox4.Text), int.Parse(textBox5.Text), double.Parse(textBox6.Text), int.Parse(textBox7.Text), int.Parse(textBox8.Text));
             FindRedColor.StartHealth();

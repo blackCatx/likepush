@@ -53,7 +53,7 @@ namespace ControlForm
             xSpace = len;
             ySpace = height;
             xStart = x + (int)(xSpace* 0.9);
-            yStart = y + ySpace / 2;
+            yStart = y + ySpace / 2 - 10;
             hdc = GetDC(new IntPtr(0));
             skillCostTime = (int)(costTime * 1000);
             CountTeamCount(count);
@@ -109,6 +109,12 @@ namespace ControlForm
                 }
                 for(int j = 0; j < jMax; j++)
                 {
+                    if (isDrinking)
+                    {
+                        Thread.Sleep(1000);
+                        break;
+                    }
+
                     y = ySpace * j + yStart;
                     p.X = x;
                     p.Y = y;
@@ -117,23 +123,18 @@ namespace ControlForm
                     {
                         SetCursorPos(x, y);
                         System.Threading.Thread.Sleep(10);
-//                        string d = DateTime.Now.ToLongTimeString();
-  //                      System.Console.WriteLine("{0}, \tPoint>>>>, {1}, {2} ", d, p.X, p.Y);
-                        if (isDrinking) break;
                         CostSkillStop(p);
-                    }
+                        System.Threading.Thread.Sleep(10);
 
+                        //                        string d = DateTime.Now.ToLongTimeString();
+                        //                      System.Console.WriteLine("{0}, \tPoint>>>>, {1}, {2} ", d, p.X, p.Y);
+
+                    }
                     //SetCursorPos(x, y);//TestCode
                     //Thread.Sleep(100); //TestCode
+
                 }
-                if (GetKeyDownState(0x30))
-                {
-                    Thread.Sleep(10000);
-                }
-                if (GetKeyDownState(123))
-                {
-                    StopFindThread();
-                }
+
             }
             return 0;
 
@@ -187,7 +188,8 @@ namespace ControlForm
             normalThread = new Thread(childRef);
             normalThread.Start();
             isRunning = true;
-
+            //启动检查喝水线程 
+            CheckSkillState();
         }
 
         public static void UpdateFind()
@@ -205,13 +207,12 @@ namespace ControlForm
 
         public static void StopFindThread()
         {
+            isRunning = false;
             if (normalThread != null)
                 normalThread.Abort();
-            isRunning = false;
 
             if (waterThread != null)
                 waterThread.Abort();
-
         }
 
 
@@ -232,15 +233,26 @@ namespace ControlForm
             waterThread = new Thread(childRef);
             waterThread.Start();
 
-
         }
 
         public static void UpdateSkillState()
         {
             while (true)
             {
+
+                if (GetKeyDownState(123))
+                {
+                    StopFindThread();
+                }
+                if (GetKeyDownState(0x30))
+                {
+                    isDrinking = true;
+                    Thread.Sleep(10000);
+                    isDrinking = false;
+                }
+                //CheckWaterState();
                 Thread.Sleep(1000);
-                CheckWaterState();
+
             }
         }
 
@@ -252,8 +264,10 @@ namespace ControlForm
             {
                 isDrinking = true;
                 SendKeyDownMsg((0x30));
-                Thread.Sleep(6000);
+                Thread.Sleep(10000);
                 isDrinking = false;
+                Thread.Sleep(2000);
+
             }
         }
 
