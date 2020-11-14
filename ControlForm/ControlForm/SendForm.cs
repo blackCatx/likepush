@@ -199,15 +199,34 @@ namespace ControlForm
             //SendMessage(reTextBoxIp, WM_SETTEXT, 0x31, 0);
             //             SendMessage(reTextBoxIp, WM_DOWN, 0x31, 0);
             //             SendMessage(reTextBoxIp, WM_UP, 0x31, 0);
-//             foreach (var item in IntWnd)
-//             {
-//                 SendMessage(item, WM_DOWN, 0x33, 0);
-//                 SendMessage(item, WM_UP, 0x33, 0);
-//             }
+            //             foreach (var item in IntWnd)
+            //             {
+            //                 SendMessage(item, WM_DOWN, 0x33, 0);
+            //                 SendMessage(item, WM_UP, 0x33, 0);
+            //             }
             //IntPtr sendTextIP = FindWindowEx(sendFormIP, new IntPtr(0), null, "");
+            int xMax = Screen.PrimaryScreen.Bounds.Width;
+            int yMax = Screen.PrimaryScreen.Bounds.Height;
+            int x = xMax / 3 * 65535 / xMax;
+            int y = yMax / 2 * 65535 / yMax;
+            //mouse_event(0x0001 | MOUSEEVENTF_ABSOLUTE, x, y, 0, 0);
+            // 
+            //             Thread.Sleep(1000);
+            //             mouse_event(0x0002 | MOUSEEVENTF_ABSOLUTE , x, y, 0, 0);
+            //             Thread.Sleep(1000);
+            // 
+            //             mouse_event(0x0004 | MOUSEEVENTF_ABSOLUTE, x, y, 0, 0);
+
+
+            Thread.Sleep(1000);
+            mouse_event(0x0002  , 2200, 2200, 0, 0);
+            Thread.Sleep(1000);
+
+            mouse_event(0x0004 , 100, 100, 0, 0);
         }
         //处理的消息种类
         //按下按键
+        public static int WM_LBUTTONDBLCLK = 0x0203;
         public static int WM_CLICK = 0x00F5;
         //WM_CHAR消息是俘获某一个字符的消息
         public static int WM_CHAR = 0x102;
@@ -215,6 +234,12 @@ namespace ControlForm
         public static int WM_UP = 0x101;
         //支持发送中文
         private const int WM_SETTEXT = 0x000C;
+
+        private readonly int MOUSEEVENTF_MOVE = 0x0001;
+        private readonly int MOUSEEVENTF_LEFTDOWN = 0x0002;
+        private readonly int MOUSEEVENTF_LEFTUP = 0x0004;
+        private readonly int MOUSEEVENTF_ABSOLUTE = 0x8000;
+
 
         //向指定窗口Send Message（判断接收成功后继续执行后续函数）
         [DllImport("User32.dll", EntryPoint = "SendMessage")]
@@ -238,6 +263,11 @@ namespace ControlForm
         public static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
         [DllImport("user32.dll", CharSet=CharSet.Auto, ExactSpelling = true)]
         public static extern short GetKeyState(int keyCode);
+
+        [DllImport("user32.dll")]
+        public static extern void mouse_event(int dwFlags, int dx, int dy, int dwData, int dwExtralnfo);
+
+        
 
         public enum KeyStates
         {

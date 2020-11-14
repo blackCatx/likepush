@@ -250,7 +250,7 @@ namespace ControlForm
                     Thread.Sleep(10000);
                     isDrinking = false;
                 }
-                //CheckWaterState();
+                CheckWaterState();
                 Thread.Sleep(1000);
 
             }

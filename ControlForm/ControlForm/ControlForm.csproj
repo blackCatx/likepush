@@ -45,6 +45,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AutoKey.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AutoKey.Designer.cs">
+      <DependentUpon>AutoKey.cs</DependentUpon>
+    </Compile>
     <Compile Include="Cutter.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -60,6 +66,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="AutoKey.resx">
+      <DependentUpon>AutoKey.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Cutter.resx">
       <DependentUpon>Cutter.cs</DependentUpon>
     </EmbeddedResource>
