@@ -276,7 +276,7 @@
             this.textBox7.ReadOnly = true;
             this.textBox7.Size = new System.Drawing.Size(53, 21);
             this.textBox7.TabIndex = 7;
-            this.textBox7.Text = "30";
+            this.textBox7.Text = "868";
             this.textBox7.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // textBox8
@@ -286,7 +286,7 @@
             this.textBox8.ReadOnly = true;
             this.textBox8.Size = new System.Drawing.Size(47, 21);
             this.textBox8.TabIndex = 8;
-            this.textBox8.Text = "220";
+            this.textBox8.Text = "1154";
             this.textBox8.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // label11

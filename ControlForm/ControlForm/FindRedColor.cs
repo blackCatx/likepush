@@ -114,15 +114,17 @@ namespace ControlForm
                         Thread.Sleep(1000);
                         break;
                     }
-
                     y = ySpace * j + yStart;
                     p.X = x;
                     p.Y = y;
                     System.Threading.Thread.Sleep(10);
                     if (IsCostTarget(p))
                     {
+
                         SetCursorPos(x, y);
                         System.Threading.Thread.Sleep(10);
+//                        string d = DateTime.Now.ToLongTimeString();
+  //                      System.Console.WriteLine("{0}, \tPoint>>>>, {1}, {2} ", d, p.X, p.Y);
                         CostSkillStop(p);
                         System.Threading.Thread.Sleep(10);
 
@@ -251,8 +253,18 @@ namespace ControlForm
                     isDrinking = false;
                 }
                 CheckWaterState();
-                Thread.Sleep(1000);
 
+                if (GetKeyDownState(0x30))
+                {
+                    isDrinking = true;
+                    Thread.Sleep(10000);
+                    isDrinking = false;
+
+                }
+                if (GetKeyDownState(123))
+                {
+                    StopFindThread();
+                }
             }
         }
 
@@ -262,6 +274,7 @@ namespace ControlForm
             Point p = new Point(xWater, yWater);
             if (IsWaterReady(p))
             {
+                SendKeyDownMsg((0x35));
                 isDrinking = true;
                 SendKeyDownMsg((0x30));
                 Thread.Sleep(10000);
