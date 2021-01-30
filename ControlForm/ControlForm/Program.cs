@@ -16,7 +16,7 @@ namespace ControlForm
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new AutoKey());
+            Application.Run(new SendForm());
         }
     }
 }

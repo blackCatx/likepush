@@ -70,7 +70,7 @@ namespace ControlForm
             {
                 StringBuilder wName = new StringBuilder(512);
                 GetWindowText(hwnd, wName, wName.Capacity);
-                if (wName.ToString().Equals("x"))
+                if (wName.ToString().Equals("魔兽世界"))
                 {
                     IntWnd.Add(hwnd);
                 }

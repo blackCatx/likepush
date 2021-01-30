@@ -233,11 +233,9 @@
             this.groupBox1.Controls.Add(this.beginBtn);
             this.groupBox1.Location = new System.Drawing.Point(21, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(199, 55);
+            this.groupBox1.Size = new System.Drawing.Size(199, 64);
             this.groupBox1.TabIndex = 18;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "groupBox1";
-            this.groupBox1.Visible = false;
             // 
             // label8
             // 
