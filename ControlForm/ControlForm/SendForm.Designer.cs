@@ -47,6 +47,7 @@
             this.textBox6 = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.textProName = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
@@ -230,12 +231,21 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.textProName);
             this.groupBox1.Controls.Add(this.beginBtn);
             this.groupBox1.Location = new System.Drawing.Point(21, 12);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(199, 64);
             this.groupBox1.TabIndex = 18;
             this.groupBox1.TabStop = false;
+            // 
+            // textProName
+            // 
+            this.textProName.Location = new System.Drawing.Point(124, 18);
+            this.textProName.Name = "textProName";
+            this.textProName.Size = new System.Drawing.Size(62, 21);
+            this.textProName.TabIndex = 23;
+            this.textProName.Text = "Lineage";
             // 
             // label8
             // 
@@ -276,6 +286,7 @@
             this.textBox7.TabIndex = 7;
             this.textBox7.Text = "868";
             this.textBox7.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.textBox7.TextChanged += new System.EventHandler(this.textBox7_TextChanged);
             // 
             // textBox8
             // 
@@ -286,6 +297,7 @@
             this.textBox8.TabIndex = 8;
             this.textBox8.Text = "1154";
             this.textBox8.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.textBox8.TextChanged += new System.EventHandler(this.textBox8_TextChanged);
             // 
             // label11
             // 
@@ -295,6 +307,7 @@
             this.label11.Size = new System.Drawing.Size(11, 12);
             this.label11.TabIndex = 9;
             this.label11.Text = "X";
+            this.label11.Click += new System.EventHandler(this.label11_Click);
             // 
             // label12
             // 
@@ -304,6 +317,7 @@
             this.label12.Size = new System.Drawing.Size(11, 12);
             this.label12.TabIndex = 10;
             this.label12.Text = "Y";
+            this.label12.Click += new System.EventHandler(this.label12_Click);
             // 
             // button2
             // 
@@ -351,6 +365,7 @@
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.SendForm_FormClosed);
             this.Load += new System.EventHandler(this.SendForm_Load);
             this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -385,6 +400,7 @@
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.TextBox textProName;
     }
 }
 

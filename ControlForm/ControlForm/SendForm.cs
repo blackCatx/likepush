@@ -68,9 +68,10 @@ namespace ControlForm
             if (isInit) return;
             EnumWindows((IntPtr hwnd, int lParam) =>
             {
+                string strName = textProName.Text;
                 StringBuilder wName = new StringBuilder(512);
                 GetWindowText(hwnd, wName, wName.Capacity);
-                if (wName.ToString().Equals("魔兽世界"))
+                if (wName.ToString().Equals(strName))
                 {
                     IntWnd.Add(hwnd);
                 }
@@ -441,6 +442,26 @@ namespace ControlForm
                 textBox8.Text = p.Y.ToString();
 
             }
+        }
+
+        private void label12_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label11_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox8_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox7_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
     public delegate bool CallBack(IntPtr hwnd, int lParam);
