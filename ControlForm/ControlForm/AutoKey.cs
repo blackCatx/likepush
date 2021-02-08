@@ -71,6 +71,12 @@ namespace ControlForm
         Point selectPoint;
         Point selectPoint2;
 
+        bool bCostSecondSkill = false;
+        bool bCoolDown = true;
+        bool bSafe = true;
+
+        int secondCdtime = 30000;
+
 
         public AutoKey()
         {
@@ -99,6 +105,12 @@ namespace ControlForm
                 secMax = 1000;
             }
 
+            bCoolDown = true;
+            bCostSecondSkill = false;
+            bSafe = false;
+            int nTxtTime = 30;
+            int.TryParse(textBox6.Text, out nTxtTime);
+            secondCdtime = nTxtTime * 1000;
             StartUpdate();
         }
 
@@ -134,32 +146,75 @@ namespace ControlForm
 
             int curTime = secMax;
             Random random = new Random();
+            int tick = 0;
             
             while (true)
             {
                 curTime = random.Next(secMin, secMax);    
                 Thread.Sleep(curTime);
+                tick = tick + curTime;
 
-                //
-                if (selectColor2 != 0)
+
+
+                if (IsCostTarget(selectPoint2))
                 {
-                    if (IsCostTarget(selectPoint2))
-                    {
 
-                        ClickKeyF7(valKey);
+                    if (IsCostTarget(selectPoint))
+                    {
+                        ClickKey(valKey);
+                        bSafe = false;
                     }
                     else
                     {
-                        if (selectColor != 0)
+                        bSafe = true;
+                    }
+
+
+                    if (bSafe)
+                    {
+                        if(tick > secondCdtime)
                         {
-                            
-                            if (IsCostTarget(selectPoint))
-                                ClickKey(valKey);
+                            tick = 0;
+                            ClickKeyF7(valKey);
+                            bCostSecondSkill = false;
+
+                        }
+                    }
+                    else
+                    {
+                        bCostSecondSkill = true;
+                    }
+                }
+                else
+                {
+                    if (bCostSecondSkill)
+                    {
+                        if (bSafe)
+                        {
+                            if (tick > secondCdtime)
+                            {
+                                tick = 0;
+                                ClickKeyF7(valKey);
+                                bCostSecondSkill = false;
+                            }
                         }
                     }
                 }
 
 
+                if (selectColor != 0)
+                {
+                    if (IsCostTarget(selectPoint))
+                    {
+                        bSafe = false;
+                        ClickKey(valKey);
+                    }
+                    else
+                    {
+                        bSafe = true;
+                    }
+
+                }
 
                 //SendKeyDownMsg(valKey);
             }
@@ -201,9 +256,6 @@ namespace ControlForm
 
         public void StartUpdate()
         {
-
-
-
 
             if (normalThread != null && normalThread.IsAlive) return;
             ThreadStart childRef = new ThreadStart(UpdateClick);
