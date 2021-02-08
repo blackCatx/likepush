@@ -56,6 +56,7 @@
             this.textBox5 = new System.Windows.Forms.TextBox();
             this.textBox6 = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
+            this.button5 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // txtSecondMin
@@ -105,7 +106,7 @@
             // 
             // btnStart
             // 
-            this.btnStart.Location = new System.Drawing.Point(52, 165);
+            this.btnStart.Location = new System.Drawing.Point(130, 165);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(75, 23);
             this.btnStart.TabIndex = 0;
@@ -123,7 +124,7 @@
             // 
             // btnStop
             // 
-            this.btnStop.Location = new System.Drawing.Point(189, 165);
+            this.btnStop.Location = new System.Drawing.Point(232, 165);
             this.btnStop.Name = "btnStop";
             this.btnStop.Size = new System.Drawing.Size(75, 23);
             this.btnStop.TabIndex = 7;
@@ -317,11 +318,22 @@
             this.label9.TabIndex = 40;
             this.label9.Text = "CD";
             // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(39, 165);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(68, 23);
+            this.button5.TabIndex = 41;
+            this.button5.Text = "同步选取位置";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
+            // 
             // AutoKey
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(324, 271);
+            this.Controls.Add(this.button5);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.textBox6);
             this.Controls.Add(this.label8);
@@ -388,5 +400,6 @@
         private System.Windows.Forms.TextBox textBox5;
         private System.Windows.Forms.TextBox textBox6;
         private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Button button5;
     }
 }
