@@ -175,7 +175,7 @@ namespace ControlForm
 //                     }
 
 
-                    if (bSafe)
+                    if (true)
                     {
                         if(tick > secondCdtime)
                         {
@@ -192,7 +192,9 @@ namespace ControlForm
                 }
                 else
                 {
-                    if (bCostSecondSkill)
+
+                    //if (bCostSecondSkill)
+                    if(false)
                     {
                         if (true)
                         {
