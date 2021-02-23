@@ -188,6 +188,19 @@ namespace ControlForm
             return false;
         }
 
+        public bool IsDebuffSide(Point p)
+        {
+
+            int c = GetPixel(hdc, p);
+            int r = (c & 0xFF);
+            int g = (c & 0xFF00) / 256;
+            int b = (c & 0xFF0000) / 65536;
+            if (r > 140 && g < 100 && b < 100)
+            {
+                return true;
+            }
+            return false;
+        }
 
         public void FindProgram()
         {
@@ -397,10 +410,36 @@ namespace ControlForm
         private void button5_Click(object sender, EventArgs e)
         {
             Point p = SelectPoint();
-            selectColor3 = GetPixel(hdc, p);
-            textBox10.Text = p.X.ToString();
-            textBox9.Text = p.Y.ToString();
-            selectPoint3 = p;
+
+            for (int i = 0; i < 50; i++)
+            {
+                p.X = p.X - i;
+                p.Y = p.Y - i;
+                if (IsDebuffSide(p))
+                {
+                    textBox10.Text = p.X.ToString();
+                    textBox9.Text = p.Y.ToString();
+                    selectColor3 = GetPixel(hdc, p);
+                    selectPoint3 = p;
+                    MessageBox.Show("找到红色边框");
+                    return;
+                }
+            }
+            for (int i = 0; i < 50; i++)
+            {
+                p.X = p.X + i;
+                p.Y = p.Y + i;
+                if (IsDebuffSide(p))
+                {
+                    textBox10.Text = p.X.ToString();
+                    textBox9.Text = p.Y.ToString();
+                    selectColor3 = GetPixel(hdc, p);
+                    selectPoint3 = p;
+                    MessageBox.Show("找到红色边框");
+                    return;
+                }
+            }
+            MessageBox.Show("没找到红色边框, 重新选点");
 
         }
 
