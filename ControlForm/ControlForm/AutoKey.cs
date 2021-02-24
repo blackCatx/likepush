@@ -157,15 +157,23 @@ namespace ControlForm
                 {
                     if (IsCostTarget(selectPoint))
                     {
-                        int c = GetPixel(hdc, selectPoint3);
-                        if (c == selectColor3)
-                        {
-                            //
-                        }
-                        else
+                        if(selectColor3 == 0)
                         {
                             ClickKey(valKey);
                         }
+                        else
+                        {
+                            int c = GetPixel(hdc, selectPoint3);
+                            if (c == selectColor3)
+                            {
+                                //
+                            }
+                            else
+                            {
+                                ClickKey(valKey);
+                            }
+                        }
+
                     }
                 }
 
@@ -331,7 +339,7 @@ namespace ControlForm
             }
             else {
 
-                int curTime = 10 * 60 * 1000;
+                int curTime = (10 * 60 * 1000) - 5000;
                 while (true)
                 {
                     ClickKeyA(valKey);
@@ -411,7 +419,7 @@ namespace ControlForm
         {
             Point p = SelectPoint();
 
-            for (int i = 0; i < 50; i++)
+            for (int i = 0; i < 100; i++)
             {
                 p.X = p.X - i;
                 p.Y = p.Y - i;
