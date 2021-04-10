@@ -36,11 +36,15 @@ namespace ControlForm
         public static int secMax = 60000;
         public static int secMin = 20000;
 
+        public static int delayTime = 10;
+
         private static Thread normalThread = null;
         private static Thread normalThreadA = null;
 
         private Keys key = new Keys();                    //热键
         private byte valKey = 0x20;
+        private byte valKey2 = 0x77;
+        private byte valKeyx = 0x77;
 
         //WM_CHAR消息是俘获某一个字符的消息
         public static int WM_CHAR = 0x102;
@@ -69,9 +73,9 @@ namespace ControlForm
         int selectColor2 = 0;
         int selectColor3 = 0;
 
-        Point selectPoint3;
         Point selectPoint;
         Point selectPoint2;
+        Point selectPoint3;
 
 
         public AutoKey()
@@ -106,29 +110,26 @@ namespace ControlForm
 
         public static void ClickKey(byte key)
         {
-            //            keybd_event(0x20, 0, 0, 0);
-            
-            keybd_event(0x74, 0x3f, 0, 0);
+            byte scanDown = (byte)GetScanKey(key);
+            keybd_event(key, scanDown, 0, 0);
             Thread.Sleep(100);
-            keybd_event(0x74, 0xbf, 0x0002, 0);
-            //keybd_event(key, 0, 0, 0);
-            //Thread.Sleep(100);
-            //keybd_event(key, 0, 0x0002, 0);
+            byte scanUp = (byte)GetScanUpKey(key);
+            keybd_event(key, scanUp, 0x0002, 0);
         }
-        public static void ClickKeyA(byte key)
+        public static void ClickKeyF6(byte key)
         {
-
             keybd_event(0x75, 0x40, 0, 0);
             Thread.Sleep(100);
             keybd_event(0x75, 0xc0, 0x0002, 0);
         }
 
-
-        public static void ClickKeyF7(byte key)
+        public static int GetScanKey(byte key)
         {
-            keybd_event(0x76, 0x41, 0, 0);
-            Thread.Sleep(100);
-            keybd_event(0x76, 0xc1, 0x0002, 0);
+            return key - 0x74 + 0x3f;
+        }
+        public static int GetScanUpKey(byte key)
+        {
+            return key - 0x74 + 0xbf;
         }
 
         public void UpdateClick()
@@ -147,7 +148,7 @@ namespace ControlForm
                 {
                     if (IsCostTarget(selectPoint2))
                     {
-                        ClickKeyF7(valKey);
+                        ClickKey(valKey2);
                     }
 
                 }
@@ -157,23 +158,7 @@ namespace ControlForm
                 {
                     if (IsCostTarget(selectPoint))
                     {
-                        if(selectColor3 == 0)
-                        {
-                            ClickKey(valKey);
-                        }
-                        else
-                        {
-                            int c = GetPixel(hdc, selectPoint3);
-                            if (c == selectColor3)
-                            {
-                                //
-                            }
-                            else
-                            {
-                                ClickKey(valKey);
-                            }
-                        }
-
+                        ClickKey(valKey);
                     }
                 }
 
@@ -259,7 +244,6 @@ namespace ControlForm
 
         private void textBox2_KeyDown(object sender, KeyEventArgs e)
         {
-            return;
             string sOutput = "";
 //             if (e.Modifiers.ToString().Length > 0 && e.Modifiers.ToString() != "None")
 //             {
@@ -269,9 +253,13 @@ namespace ControlForm
 //             }
             if (e.KeyValue != 17 && e.KeyValue != 18 && e.KeyValue != 97)
             {
-                sOutput = e.KeyCode.ToString();
-                key = e.KeyCode;
-                valKey = byte.Parse( e.KeyValue.ToString() );
+                if(e.KeyValue > 0x73 && e.KeyValue < 0x82)
+                {
+                    sOutput = e.KeyCode.ToString();
+                    key = e.KeyCode;
+                    valKey = byte.Parse(e.KeyValue.ToString());
+                }
+
             }
 
             textBox2.Text = sOutput;
@@ -339,11 +327,12 @@ namespace ControlForm
             }
             else {
 
-                int curTime = (10 * 60 * 1000) - 5000;
+                int curTime = (delayTime * 60 * 1000) + 5000;
                 while (true)
                 {
-                    ClickKeyA(valKey);
+                    ClickKey(valKeyx);
                     Thread.Sleep(curTime);
+
                 }
             }
 
@@ -358,6 +347,8 @@ namespace ControlForm
 
         private void button1_Click(object sender, EventArgs e)
         {
+            Int32.TryParse(textBox13.Text, out delayTime);
+
             Thread.Sleep(2000);
             FindProgram();
             StartTimer();
@@ -451,5 +442,57 @@ namespace ControlForm
 
         }
 
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox11_KeyDown(object sender, KeyEventArgs e)
+        {
+//             string sOutput = "";
+//             if (e.KeyValue != 17 && e.KeyValue != 18 && e.KeyValue != 97)
+//             {
+//                 sOutput = e.KeyCode.ToString();
+//                 valKeyx = byte.Parse(e.KeyValue.ToString());
+//             }
+// 
+//             textBox2.Text = sOutput;
+        }
+
+        private void textBox4_KeyDown(object sender, KeyEventArgs e)
+        {
+            string sOutput = "";
+
+            if (e.KeyValue != 17 && e.KeyValue != 18 && e.KeyValue != 97)
+            {
+                if (e.KeyValue > 0x73 && e.KeyValue < 0x82)
+                {
+                    sOutput = e.KeyCode.ToString();
+                    key = e.KeyCode;
+                    valKey2 = byte.Parse(e.KeyValue.ToString());
+                }
+
+            }
+
+            textBox4.Text = sOutput;
+        }
+
+        private void textBox5_KeyDown(object sender, KeyEventArgs e)
+        {
+            string sOutput = "";
+
+            if (e.KeyValue != 17 && e.KeyValue != 18 && e.KeyValue != 97)
+            {
+                if (e.KeyValue > 0x73 && e.KeyValue < 0x82)
+                {
+                    sOutput = e.KeyCode.ToString();
+                    key = e.KeyCode;
+                    valKeyx = byte.Parse(e.KeyValue.ToString());
+                }
+
+            }
+
+            textBox5.Text = sOutput;
+        }
     }
 }

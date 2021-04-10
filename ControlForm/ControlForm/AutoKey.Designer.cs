@@ -61,6 +61,12 @@
             this.label13 = new System.Windows.Forms.Label();
             this.textBox9 = new System.Windows.Forms.TextBox();
             this.textBox10 = new System.Windows.Forms.TextBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.textBox11 = new System.Windows.Forms.TextBox();
+            this.textBox12 = new System.Windows.Forms.TextBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.textBox13 = new System.Windows.Forms.TextBox();
+            this.label16 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // txtSecondMin
@@ -97,6 +103,7 @@
             this.textBox2.Size = new System.Drawing.Size(35, 21);
             this.textBox2.TabIndex = 4;
             this.textBox2.Text = "F5";
+            this.textBox2.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
             this.textBox2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox2_KeyDown);
             // 
             // label3
@@ -110,7 +117,7 @@
             // 
             // btnStart
             // 
-            this.btnStart.Location = new System.Drawing.Point(52, 165);
+            this.btnStart.Location = new System.Drawing.Point(52, 131);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(75, 23);
             this.btnStart.TabIndex = 0;
@@ -128,7 +135,7 @@
             // 
             // btnStop
             // 
-            this.btnStop.Location = new System.Drawing.Point(189, 165);
+            this.btnStop.Location = new System.Drawing.Point(189, 131);
             this.btnStop.Name = "btnStop";
             this.btnStop.Size = new System.Drawing.Size(75, 23);
             this.btnStop.TabIndex = 7;
@@ -143,6 +150,7 @@
             this.textProName.Size = new System.Drawing.Size(62, 21);
             this.textProName.TabIndex = 24;
             this.textProName.Text = "Lineage";
+            this.textProName.Visible = false;
             // 
             // label4
             // 
@@ -152,6 +160,7 @@
             this.label4.Size = new System.Drawing.Size(41, 12);
             this.label4.TabIndex = 25;
             this.label4.Text = "游戏名";
+            this.label4.Visible = false;
             // 
             // button2
             // 
@@ -203,7 +212,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(52, 225);
+            this.button1.Location = new System.Drawing.Point(52, 203);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 31;
@@ -213,7 +222,7 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(189, 225);
+            this.button3.Location = new System.Drawing.Point(189, 203);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 23);
             this.button3.TabIndex = 32;
@@ -286,11 +295,12 @@
             this.textBox4.Size = new System.Drawing.Size(35, 21);
             this.textBox4.TabIndex = 36;
             this.textBox4.Text = "F7";
+            this.textBox4.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox4_KeyDown);
             // 
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(26, 201);
+            this.label8.Location = new System.Drawing.Point(25, 168);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(41, 12);
             this.label8.TabIndex = 37;
@@ -298,12 +308,13 @@
             // 
             // textBox5
             // 
-            this.textBox5.Location = new System.Drawing.Point(72, 198);
+            this.textBox5.Location = new System.Drawing.Point(71, 165);
             this.textBox5.Name = "textBox5";
             this.textBox5.ReadOnly = true;
             this.textBox5.Size = new System.Drawing.Size(35, 21);
             this.textBox5.TabIndex = 38;
             this.textBox5.Text = "F6";
+            this.textBox5.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox5_KeyDown);
             // 
             // label9
             // 
@@ -313,6 +324,7 @@
             this.label9.Size = new System.Drawing.Size(41, 12);
             this.label9.TabIndex = 44;
             this.label9.Text = "DEBUFF";
+            this.label9.Visible = false;
             // 
             // textBox6
             // 
@@ -322,6 +334,7 @@
             this.textBox6.Size = new System.Drawing.Size(35, 21);
             this.textBox6.TabIndex = 45;
             this.textBox6.Text = "F5";
+            this.textBox6.Visible = false;
             // 
             // button5
             // 
@@ -331,6 +344,7 @@
             this.button5.TabIndex = 43;
             this.button5.Text = "选取位置";
             this.button5.UseVisualStyleBackColor = true;
+            this.button5.Visible = false;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // label10
@@ -341,6 +355,7 @@
             this.label10.Size = new System.Drawing.Size(11, 12);
             this.label10.TabIndex = 42;
             this.label10.Text = "Y";
+            this.label10.Visible = false;
             // 
             // label13
             // 
@@ -350,6 +365,7 @@
             this.label13.Size = new System.Drawing.Size(11, 12);
             this.label13.TabIndex = 41;
             this.label13.Text = "X";
+            this.label13.Visible = false;
             // 
             // textBox9
             // 
@@ -360,6 +376,7 @@
             this.textBox9.TabIndex = 40;
             this.textBox9.Text = "2";
             this.textBox9.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.textBox9.Visible = false;
             // 
             // textBox10
             // 
@@ -370,12 +387,70 @@
             this.textBox10.TabIndex = 39;
             this.textBox10.Text = "2";
             this.textBox10.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.textBox10.Visible = false;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(167, 168);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(41, 12);
+            this.label14.TabIndex = 46;
+            this.label14.Text = "快捷键";
+            this.label14.Visible = false;
+            // 
+            // textBox11
+            // 
+            this.textBox11.Location = new System.Drawing.Point(213, 165);
+            this.textBox11.Name = "textBox11";
+            this.textBox11.ReadOnly = true;
+            this.textBox11.Size = new System.Drawing.Size(35, 21);
+            this.textBox11.TabIndex = 47;
+            this.textBox11.Text = "F8";
+            this.textBox11.Visible = false;
+            this.textBox11.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox11_KeyDown);
+            // 
+            // textBox12
+            // 
+            this.textBox12.Location = new System.Drawing.Point(189, 165);
+            this.textBox12.Name = "textBox12";
+            this.textBox12.Size = new System.Drawing.Size(55, 21);
+            this.textBox12.TabIndex = 3;
+            this.textBox12.Text = "5";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(199, 46);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(17, 12);
+            this.label15.TabIndex = 2;
+            this.label15.Text = "秒";
+            // 
+            // textBox13
+            // 
+            this.textBox13.Location = new System.Drawing.Point(189, 165);
+            this.textBox13.Name = "textBox13";
+            this.textBox13.Size = new System.Drawing.Size(55, 21);
+            this.textBox13.TabIndex = 3;
+            this.textBox13.Text = "10";
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(247, 168);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(17, 12);
+            this.label16.TabIndex = 2;
+            this.label16.Text = "分";
             // 
             // AutoKey
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(356, 282);
+            this.ClientSize = new System.Drawing.Size(356, 248);
+            this.Controls.Add(this.label14);
+            this.Controls.Add(this.textBox11);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.textBox6);
             this.Controls.Add(this.button5);
@@ -402,9 +477,13 @@
             this.Controls.Add(this.label4);
             this.Controls.Add(this.textProName);
             this.Controls.Add(this.btnStop);
+            this.Controls.Add(this.textBox13);
+            this.Controls.Add(this.textBox12);
             this.Controls.Add(this.txtSecondMax);
             this.Controls.Add(this.btnStart);
             this.Controls.Add(this.label3);
+            this.Controls.Add(this.label16);
+            this.Controls.Add(this.label15);
             this.Controls.Add(this.textBox2);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -452,5 +531,11 @@
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.TextBox textBox9;
         private System.Windows.Forms.TextBox textBox10;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.TextBox textBox11;
+        private System.Windows.Forms.TextBox textBox12;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.TextBox textBox13;
+        private System.Windows.Forms.Label label16;
     }
 }
