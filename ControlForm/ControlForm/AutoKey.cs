@@ -98,18 +98,7 @@ namespace ControlForm
         {
             InitializeComponent();
             hdc = GetDC(new IntPtr(0));
-            if (selectPoint2.IsEmpty)
-            {
-                LogF("empty");
-            }
-            if (selectPoint3.IsEmpty)
-            {
-                LogF("empty");
-            }
-            if (selectPoint1.IsEmpty)
-            {
-                LogF("empty");
-            }
+
         }
 
         private void btnStart_Click(object sender, EventArgs e)
@@ -161,22 +150,22 @@ namespace ControlForm
             {
                 v2Time = 0;
             }
-            LogF(string.Format("CD 时间 {0}, {1}, {2}", vTime.ToString(), v2Time.ToString(), onceCdTime.ToString()));
+            //LogF(string.Format("CD 时间 {0}, {1}, {2}", vTime.ToString(), v2Time.ToString(), onceCdTime.ToString()));
 
             StartUpdate();
         }
 
         public static void ClickKey(byte key)
         {
-            LogF("开始释放按键！");
-            LogF(key.ToString());
+            //LogF("开始释放按键！");
+            //LogF(key.ToString());
 
             byte scanDown = (byte)GetScanKey(key);
             keybd_event(key, scanDown, 0, 0);
             Thread.Sleep(100);
             byte scanUp = (byte)GetScanUpKey(key);
             keybd_event(key, scanUp, 0x0002, 0);
-            LogF("结束释放按键！");
+            //LogF("结束释放按键！");
 
         }
         public static void ClickKeyF6(byte key)
@@ -224,7 +213,7 @@ namespace ControlForm
                 {
                     if (IsCostTarget(selectPoint2))
                     {
-                        LogF("F7判定释放成功！");
+                        //LogF("F7判定释放成功！");
 
                         if (v2Cd <= 0)
                         {
@@ -234,15 +223,15 @@ namespace ControlForm
                     }
                     else
                     {
-                        LogF("F7判定释放失败！");
-                        LogF(string.Format("F7判定点 x = {0}, y = {1}", selectPoint2.X.ToString(), selectPoint2.Y.ToString()));
+                        //LogF("F7判定释放失败！");
+                        //LogF(string.Format("F7判定点 x = {0}, y = {1}", selectPoint2.X.ToString(), selectPoint2.Y.ToString()));
 
                     }
 
                 }
                 else
                 {
-                    LogF("F7没有成功选色点！");
+                    //LogF("F7没有成功选色点！");
 
                 }
 
@@ -250,8 +239,8 @@ namespace ControlForm
                 {
                     if (IsCostTarget(selectPoint1))
                     {
-                        LogF("F5判定释放成功！");
-                        LogF(vCd.ToString());
+                        //LogF("F5判定释放成功！");
+                        //LogF(vCd.ToString());
                         if (vCd <= 0)
                         {
                             ClickKey(valKey);
@@ -260,14 +249,14 @@ namespace ControlForm
                     }
                     else
                     {
-                        LogF("F5判定释放失败！");
-                        LogF(string.Format("F5判定点 x = {0}, y = {1}", selectPoint1.X.ToString(), selectPoint1.Y.ToString()));
+                        //LogF("F5判定释放失败！");
+                        //LogF(string.Format("F5判定点 x = {0}, y = {1}", selectPoint1.X.ToString(), selectPoint1.Y.ToString()));
 
                     }
                 }
                 else
                 {
-                    LogF("F5没有成功选色点！");
+                    //LogF("F5没有成功选色点！");
 
                 }
 
@@ -312,7 +301,7 @@ namespace ControlForm
             {
                 return true;
             }
-            LogF(string.Format("判定释放点 x = {0}, y = {1},  r={2}, g={3}, b={4}", p.X.ToString(), p.Y.ToString(), r, g, b));
+            //LogF(string.Format("判定释放点 x = {0}, y = {1},  r={2}, g={3}, b={4}", p.X.ToString(), p.Y.ToString(), r, g, b));
 
             return false;
         }
@@ -439,7 +428,7 @@ namespace ControlForm
             textBox8.Text = p.Y.ToString();
             selectColor = GetPixel(hdc, p);
             selectPoint1 = p;
-            LogF(string.Format("F5选色点！{0} x = {1}, y = {2}", selectColor.ToString(), textBox7.Text, textBox8.Text));
+            //LogF(string.Format("F5选色点！{0} x = {1}, y = {2}", selectColor.ToString(), textBox7.Text, textBox8.Text));
 
         }
 
@@ -505,7 +494,7 @@ namespace ControlForm
             textBox3.Text = p.Y.ToString();
             selectColor2 = GetPixel(hdc, p);
             selectPoint2 = p;
-            LogF(string.Format("F7选色点！{0}", selectColor2.ToString()));
+            //LogF(string.Format("F7选色点！{0}", selectColor2.ToString()));
 
         }
 
@@ -670,6 +659,7 @@ namespace ControlForm
 
         private static int LogF(string slog)
         {
+            return 0;
             string _logDir = "c:\\ConvexEditer\\";
             string _logFile = "log_";
             string dt = DateTime.Now.ToString("yyyy_MM_dd");
