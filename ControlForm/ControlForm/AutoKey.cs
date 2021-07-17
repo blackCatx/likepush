@@ -33,8 +33,8 @@ namespace ControlForm
 
         private List<IntPtr> IntWnd = new List<IntPtr>();
 
-        public static int secMax = 60000;
-        public static int secMin = 20000;
+        public static int secMax = 600;
+        public static int secMin = 300;
 
         public static int delayTime = 10;
 
@@ -42,9 +42,16 @@ namespace ControlForm
         private static Thread normalThreadA = null;
 
         private Keys key = new Keys();                    //热键
-        private byte valKey = 0x20;
-        private byte valKey2 = 0x77;
-        private byte valKeyx = 0x77;
+        private byte valKey  = 0x74;//F5 TEXT2 
+        private byte valKey2 = 0x76;//F7 text4
+        private byte valKeyx = 0x75;//F6 text5
+        private byte valKey4 = 0x77;//F8  text16
+
+        private int runTime = 0;
+        private int onceCdTime = 0;
+        private int countDown = 0;
+        private int f11Times = 0;
+        private int f11CD = 1000;
 
         //WM_CHAR消息是俘获某一个字符的消息
         public static int WM_CHAR = 0x102;
@@ -72,11 +79,15 @@ namespace ControlForm
         int selectColor = 0;
         int selectColor2 = 0;
         int selectColor3 = 0;
+        int selectColor4 = 0;
+
 
         Point selectPoint;
         Point selectPoint2;
         Point selectPoint3;
+        Point selectPoint4;
 
+        bool isClick = false;
 
         public AutoKey()
         {
@@ -105,6 +116,16 @@ namespace ControlForm
                 secMax = 1000;
             }
 
+            res = Int32.TryParse(textBox12.Text, out onceCdTime);
+            if (res)
+            {
+                onceCdTime = onceCdTime* 60 * 1000;
+            }
+            else
+            {
+                onceCdTime = 180 * 60 * 1000;
+            }
+
             StartUpdate();
         }
 
@@ -123,6 +144,13 @@ namespace ControlForm
             keybd_event(0x75, 0xc0, 0x0002, 0);
         }
 
+        public static void ClickKeyF11(byte key)
+        {
+            keybd_event(0x80, 0x45, 0, 0);
+            Thread.Sleep(100);
+            keybd_event(0x80, 0xc5, 0x0002, 0);
+        }
+
         public static int GetScanKey(byte key)
         {
             return key - 0x74 + 0x3f;
@@ -137,12 +165,13 @@ namespace ControlForm
 
             int curTime = secMax;
             Random random = new Random();
-            
+            countDown = 0;
             while (true)
             {
                 curTime = random.Next(secMin, secMax);    
                 Thread.Sleep(curTime);
-
+                if(countDown > 0)  countDown -= curTime;
+                if (f11CD > 0) f11CD -= curTime;
 
                 if (selectColor2 != 0)
                 {
@@ -162,6 +191,31 @@ namespace ControlForm
                     }
                 }
 
+                if (selectColor4 != 0)
+                {
+                    if (IsCostTarget(selectPoint4))
+                    {
+                        if (countDown <= 0 )
+                        {
+                            ClickKey(valKey4);
+                            countDown = onceCdTime;
+                            f11Times = 3;
+                            f11CD = 1000;
+
+                        }
+                    }
+
+                }
+
+                if (f11Times > 0)
+                {
+                    if (f11CD <= 0)
+                    {
+                        ClickKeyF11(0);
+                        f11Times--;
+                        f11CD = 1000;
+                    }
+                }
 
                 //SendKeyDownMsg(valKey);
             }
@@ -370,6 +424,17 @@ namespace ControlForm
 
         }
 
+        private void button6_Click(object sender, EventArgs e)
+        {
+
+            Point p = SelectPoint();
+            textBox14.Text = p.X.ToString();
+            textBox15.Text = p.Y.ToString();
+            selectColor4 = GetPixel(hdc, p);
+            selectPoint4 = p;
+
+        }
+
         private void label9_Click(object sender, EventArgs e)
         {
 
@@ -493,6 +558,29 @@ namespace ControlForm
             }
 
             textBox5.Text = sOutput;
+        }
+
+        private void textBox16_KeyDown(object sender, KeyEventArgs e)
+        {
+            string sOutput = "";
+
+            if (e.KeyValue != 17 && e.KeyValue != 18 && e.KeyValue != 97)
+            {
+                if (e.KeyValue > 0x73 && e.KeyValue < 0x82)
+                {
+                    sOutput = e.KeyCode.ToString();
+                    key = e.KeyCode;
+                    valKey4 = byte.Parse(e.KeyValue.ToString());
+                }
+
+            }
+
+            textBox16.Text = sOutput;
+        }
+
+        private void textBox4_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
