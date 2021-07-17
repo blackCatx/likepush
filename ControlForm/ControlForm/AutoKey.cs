@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.Threading;
-
+using System.IO;
 
 namespace ControlForm
 {
@@ -47,6 +47,11 @@ namespace ControlForm
         private byte valKeyx = 0x75;//F6 text5
         private byte valKey4 = 0x77;//F8  text16
 
+        private int vTime = 0;
+        private int v2Time = 0;
+
+
+
         private int runTime = 0;
         private int onceCdTime = 0;
         private int countDown = 0;
@@ -82,7 +87,7 @@ namespace ControlForm
         int selectColor4 = 0;
 
 
-        Point selectPoint;
+        Point selectPoint1;
         Point selectPoint2;
         Point selectPoint3;
         Point selectPoint4;
@@ -93,6 +98,18 @@ namespace ControlForm
         {
             InitializeComponent();
             hdc = GetDC(new IntPtr(0));
+            if (selectPoint2.IsEmpty)
+            {
+                LogF("empty");
+            }
+            if (selectPoint3.IsEmpty)
+            {
+                LogF("empty");
+            }
+            if (selectPoint1.IsEmpty)
+            {
+                LogF("empty");
+            }
         }
 
         private void btnStart_Click(object sender, EventArgs e)
@@ -126,16 +143,41 @@ namespace ControlForm
                 onceCdTime = 180 * 60 * 1000;
             }
 
+
+            res = Int32.TryParse(textBox18.Text, out vTime);
+            if (res)
+            {
+            }
+            else
+            {
+                vTime = 0;
+            }
+
+            res = Int32.TryParse(textBox17.Text, out v2Time);
+            if (res)
+            {
+            }
+            else
+            {
+                v2Time = 0;
+            }
+            LogF(string.Format("CD 时间 {0}, {1}, {2}", vTime.ToString(), v2Time.ToString(), onceCdTime.ToString()));
+
             StartUpdate();
         }
 
         public static void ClickKey(byte key)
         {
+            LogF("开始释放按键！");
+            LogF(key.ToString());
+
             byte scanDown = (byte)GetScanKey(key);
             keybd_event(key, scanDown, 0, 0);
             Thread.Sleep(100);
             byte scanUp = (byte)GetScanUpKey(key);
             keybd_event(key, scanUp, 0x0002, 0);
+            LogF("结束释放按键！");
+
         }
         public static void ClickKeyF6(byte key)
         {
@@ -166,32 +208,70 @@ namespace ControlForm
             int curTime = secMax;
             Random random = new Random();
             countDown = 0;
+            int v2Cd = 0;
+            int vCd = 0;
+
             while (true)
             {
                 curTime = random.Next(secMin, secMax);    
                 Thread.Sleep(curTime);
                 if(countDown > 0)  countDown -= curTime;
                 if (f11CD > 0) f11CD -= curTime;
+                if (v2Cd > 0) v2Cd -= curTime;
+                if (vCd > 0) vCd -= curTime;
 
-                if (selectColor2 != 0)
+                if (!selectPoint2.IsEmpty)  //第二个按钮按键的判断F7
                 {
                     if (IsCostTarget(selectPoint2))
                     {
-                        ClickKey(valKey2);
+                        LogF("F7判定释放成功！");
+
+                        if (v2Cd <= 0)
+                        {
+                            ClickKey(valKey2);
+                            v2Cd = v2Time;
+                        }
                     }
-
-                }
-
-
-                if (selectColor != 0)
-                {
-                    if (IsCostTarget(selectPoint))
+                    else
                     {
-                        ClickKey(valKey);
+                        LogF("F7判定释放失败！");
+                        LogF(string.Format("F7判定点 x = {0}, y = {1}", selectPoint2.X.ToString(), selectPoint2.Y.ToString()));
+
                     }
+
+                }
+                else
+                {
+                    LogF("F7没有成功选色点！");
+
                 }
 
-                if (selectColor4 != 0)
+                if (!selectPoint1.IsEmpty)//第1个按钮按键的判断F5
+                {
+                    if (IsCostTarget(selectPoint1))
+                    {
+                        LogF("F5判定释放成功！");
+                        LogF(vCd.ToString());
+                        if (vCd <= 0)
+                        {
+                            ClickKey(valKey);
+                            vCd = vTime;
+                        }
+                    }
+                    else
+                    {
+                        LogF("F5判定释放失败！");
+                        LogF(string.Format("F5判定点 x = {0}, y = {1}", selectPoint1.X.ToString(), selectPoint1.Y.ToString()));
+
+                    }
+                }
+                else
+                {
+                    LogF("F5没有成功选色点！");
+
+                }
+
+                if (!selectPoint4.IsEmpty) //第3个按钮按键的判断f8
                 {
                     if (IsCostTarget(selectPoint4))
                     {
@@ -207,7 +287,7 @@ namespace ControlForm
 
                 }
 
-                if (f11Times > 0)
+                if (f11Times > 0) // F8后会加3次F11
                 {
                     if (f11CD <= 0)
                     {
@@ -232,6 +312,8 @@ namespace ControlForm
             {
                 return true;
             }
+            LogF(string.Format("判定释放点 x = {0}, y = {1},  r={2}, g={3}, b={4}", p.X.ToString(), p.Y.ToString(), r, g, b));
+
             return false;
         }
 
@@ -356,7 +438,9 @@ namespace ControlForm
             textBox7.Text = p.X.ToString();
             textBox8.Text = p.Y.ToString();
             selectColor = GetPixel(hdc, p);
-            selectPoint = p;
+            selectPoint1 = p;
+            LogF(string.Format("F5选色点！{0} x = {1}, y = {2}", selectColor.ToString(), textBox7.Text, textBox8.Text));
+
         }
 
         public void StartTimer()
@@ -421,6 +505,7 @@ namespace ControlForm
             textBox3.Text = p.Y.ToString();
             selectColor2 = GetPixel(hdc, p);
             selectPoint2 = p;
+            LogF(string.Format("F7选色点！{0}", selectColor2.ToString()));
 
         }
 
@@ -582,5 +667,33 @@ namespace ControlForm
         {
 
         }
+
+        private static int LogF(string slog)
+        {
+            string _logDir = "c:\\ConvexEditer\\";
+            string _logFile = "log_";
+            string dt = DateTime.Now.ToString("yyyy_MM_dd");
+            string temFile = _logDir + _logFile + dt + ".log";
+            FileStream logFile = new FileStream(temFile, FileMode.OpenOrCreate);
+            logFile.Seek(0, SeekOrigin.End);
+            StreamWriter sw = new StreamWriter(logFile);
+
+            try
+            {
+                sw.WriteLine(slog);
+            }
+            catch (IOException e)
+            {
+               
+            }
+            finally
+            {
+                sw.Flush();
+                sw.Close();
+            }
+
+            return 0;
+        }
+
     }
 }
