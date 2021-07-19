@@ -290,17 +290,29 @@ namespace ControlForm
 
         public Color GetScreenBmpPixel(Point p)
         {
+            try
+            {
+
             // 新建一个和屏幕大小相同的图片
-            Bitmap CatchBmp = new Bitmap(Screen.AllScreens[0].Bounds.Width, Screen.AllScreens[0].Bounds.Height);
+                Bitmap CatchBmp = new Bitmap(Screen.AllScreens[0].Bounds.Width, Screen.AllScreens[0].Bounds.Height);
 
             // 创建一个画板，让我们可以在画板上画图
             // 这个画板也就是和屏幕大小一样大的图片
             // 我们可以通过Graphics这个类在这个空白图片上画图
-            Graphics g = Graphics.FromImage(CatchBmp);
+                Graphics g = Graphics.FromImage(CatchBmp);
 
             // 把屏幕图片拷贝到我们创建的空白图片 CatchBmp中
-            g.CopyFromScreen(new Point(0, 0), new Point(0, 0), new Size(Screen.AllScreens[0].Bounds.Width, Screen.AllScreens[0].Bounds.Height));
-            return CatchBmp.GetPixel(p.X, p.Y);
+                g.CopyFromScreen(new Point(0, 0), new Point(0, 0), new Size(Screen.AllScreens[0].Bounds.Width, Screen.AllScreens[0].Bounds.Height));
+                Color r = CatchBmp.GetPixel(p.X, p.Y);
+                CatchBmp.Dispose();
+                g.Dispose();
+                return r;
+            }
+            catch(Exception ex)
+            {
+                return Color.White;
+
+            }
         }
 
         public bool IsCostTarget(Point p)
