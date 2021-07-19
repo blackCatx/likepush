@@ -88,7 +88,7 @@
             this.txtSecondMin.Name = "txtSecondMin";
             this.txtSecondMin.Size = new System.Drawing.Size(31, 21);
             this.txtSecondMin.TabIndex = 2;
-            this.txtSecondMin.Text = "3";
+            this.txtSecondMin.Text = "0";
             // 
             // label1
             // 
@@ -135,7 +135,7 @@
             this.txtSecondMax.Name = "txtSecondMax";
             this.txtSecondMax.Size = new System.Drawing.Size(31, 21);
             this.txtSecondMax.TabIndex = 3;
-            this.txtSecondMax.Text = "5";
+            this.txtSecondMax.Text = "1";
             // 
             // btnStop
             // 

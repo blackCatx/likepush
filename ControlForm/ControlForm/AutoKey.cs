@@ -33,8 +33,8 @@ namespace ControlForm
 
         private List<IntPtr> IntWnd = new List<IntPtr>();
 
-        public static int secMax = 600;
-        public static int secMin = 300;
+        public static int secMax = 100;
+        public static int secMin = 50;
 
         public static int delayTime = 10;
 
@@ -98,18 +98,6 @@ namespace ControlForm
         {
             InitializeComponent();
             hdc = GetDC(new IntPtr(0));
-            if (selectPoint2.IsEmpty)
-            {
-                LogF("empty");
-            }
-            if (selectPoint3.IsEmpty)
-            {
-                LogF("empty");
-            }
-            if (selectPoint1.IsEmpty)
-            {
-                LogF("empty");
-            }
         }
 
         private void btnStart_Click(object sender, EventArgs e)
@@ -147,6 +135,7 @@ namespace ControlForm
             res = Int32.TryParse(textBox18.Text, out vTime);
             if (res)
             {
+                vTime = vTime * 1000;
             }
             else
             {
@@ -156,41 +145,48 @@ namespace ControlForm
             res = Int32.TryParse(textBox17.Text, out v2Time);
             if (res)
             {
+                v2Time = v2Time * 1000;
             }
             else
             {
                 v2Time = 0;
             }
-            LogF(string.Format("CD 时间 {0}, {1}, {2}", vTime.ToString(), v2Time.ToString(), onceCdTime.ToString()));
+            //LogF(string.Format("CD 时间 {0}, {1}, {2}", vTime.ToString(), v2Time.ToString(), onceCdTime.ToString()));
 
             StartUpdate();
         }
 
         public static void ClickKey(byte key)
         {
-            LogF("开始释放按键！");
-            LogF(key.ToString());
-
+            //LogF("开始释放按键！");
+            //LogF(key.ToString());
             byte scanDown = (byte)GetScanKey(key);
             keybd_event(key, scanDown, 0, 0);
-            Thread.Sleep(100);
+            Thread.Sleep(50);
             byte scanUp = (byte)GetScanUpKey(key);
             keybd_event(key, scanUp, 0x0002, 0);
-            LogF("结束释放按键！");
+            //LogF("结束释放按键！");
 
         }
         public static void ClickKeyF6(byte key)
         {
             keybd_event(0x75, 0x40, 0, 0);
-            Thread.Sleep(100);
+            Thread.Sleep(50);
             keybd_event(0x75, 0xc0, 0x0002, 0);
         }
 
         public static void ClickKeyF11(byte key)
         {
             keybd_event(0x80, 0x45, 0, 0);
-            Thread.Sleep(100);
+            Thread.Sleep(50);
             keybd_event(0x80, 0xc5, 0x0002, 0);
+        }
+
+        public static void ClickKeyF12(byte key)
+        {
+            keybd_event(0x81, 0x46, 0, 0);//75 76 77 78 79 80 81
+            Thread.Sleep(50);
+            keybd_event(0x81, 0xc6, 0x0002, 0);
         }
 
         public static int GetScanKey(byte key)
@@ -213,7 +209,8 @@ namespace ControlForm
 
             while (true)
             {
-                curTime = random.Next(secMin, secMax);    
+                curTime = random.Next(secMin, secMax);
+                //curTime = curTime / 2;
                 Thread.Sleep(curTime);
                 if(countDown > 0)  countDown -= curTime;
                 if (f11CD > 0) f11CD -= curTime;
@@ -224,8 +221,6 @@ namespace ControlForm
                 {
                     if (IsCostTarget(selectPoint2))
                     {
-                        LogF("F7判定释放成功！");
-
                         if (v2Cd <= 0)
                         {
                             ClickKey(valKey2);
@@ -234,24 +229,19 @@ namespace ControlForm
                     }
                     else
                     {
-                        LogF("F7判定释放失败！");
-                        LogF(string.Format("F7判定点 x = {0}, y = {1}", selectPoint2.X.ToString(), selectPoint2.Y.ToString()));
-
+                        //LogF(string.Format("F7判定点释放失败 x = {0}, y = {1}", selectPoint2.X.ToString(), selectPoint2.Y.ToString()));
                     }
 
                 }
                 else
                 {
-                    LogF("F7没有成功选色点！");
-
+                    //LogF("F7没有选色点！");
                 }
 
                 if (!selectPoint1.IsEmpty)//第1个按钮按键的判断F5
                 {
                     if (IsCostTarget(selectPoint1))
                     {
-                        LogF("F5判定释放成功！");
-                        LogF(vCd.ToString());
                         if (vCd <= 0)
                         {
                             ClickKey(valKey);
@@ -260,15 +250,12 @@ namespace ControlForm
                     }
                     else
                     {
-                        LogF("F5判定释放失败！");
-                        LogF(string.Format("F5判定点 x = {0}, y = {1}", selectPoint1.X.ToString(), selectPoint1.Y.ToString()));
-
+                        //LogF(string.Format("F5判定点释放失败 x = {0}, y = {1}", selectPoint1.X.ToString(), selectPoint1.Y.ToString()));
                     }
                 }
                 else
                 {
-                    LogF("F5没有成功选色点！");
-
+                    //LogF("F5没有选色点！");
                 }
 
                 if (!selectPoint4.IsEmpty) //第3个按钮按键的判断f8
@@ -279,7 +266,7 @@ namespace ControlForm
                         {
                             ClickKey(valKey4);
                             countDown = onceCdTime;
-                            f11Times = 3;
+                            f11Times = 2;
                             f11CD = 1000;
 
                         }
@@ -291,7 +278,7 @@ namespace ControlForm
                 {
                     if (f11CD <= 0)
                     {
-                        ClickKeyF11(0);
+                        ClickKeyF12(0);
                         f11Times--;
                         f11CD = 1000;
                     }
@@ -301,18 +288,37 @@ namespace ControlForm
             }
         }
 
+        public Color GetScreenBmpPixel(Point p)
+        {
+            // 新建一个和屏幕大小相同的图片
+            Bitmap CatchBmp = new Bitmap(Screen.AllScreens[0].Bounds.Width, Screen.AllScreens[0].Bounds.Height);
+
+            // 创建一个画板，让我们可以在画板上画图
+            // 这个画板也就是和屏幕大小一样大的图片
+            // 我们可以通过Graphics这个类在这个空白图片上画图
+            Graphics g = Graphics.FromImage(CatchBmp);
+
+            // 把屏幕图片拷贝到我们创建的空白图片 CatchBmp中
+            g.CopyFromScreen(new Point(0, 0), new Point(0, 0), new Size(Screen.AllScreens[0].Bounds.Width, Screen.AllScreens[0].Bounds.Height));
+            return CatchBmp.GetPixel(p.X, p.Y);
+        }
+
         public bool IsCostTarget(Point p)
         {
-
-            int c = GetPixel(hdc, p);
-            int r = (c & 0xFF);
-            int g = (c & 0xFF00) / 256;
-            int b = (c & 0xFF0000) / 65536;
+            Color cl = GetScreenBmpPixel(p);
+            int rr = cl.R;
+            //             int c = GetPixel(hdc, p);
+            //             int r = (c & 0xFF);
+            //             int g = (c & 0xFF00) / 256;
+            //             int b = (c & 0xFF0000) / 65536;
+            int r = cl.R;
+            int g = cl.G;
+            int b = cl.B;
             if (r < 80 && g < 80 && b < 80)
             {
                 return true;
             }
-            LogF(string.Format("判定释放点 x = {0}, y = {1},  r={2}, g={3}, b={4}", p.X.ToString(), p.Y.ToString(), r, g, b));
+            //LogF(string.Format("判定释放点 x = {0}, y = {1},  r={2}, g={3}, b={4}", p.X.ToString(), p.Y.ToString(), r, g, b));
 
             return false;
         }
@@ -414,7 +420,7 @@ namespace ControlForm
                 lp = lp | 0x3f << 16;
                 int lparam = lp; 
                 SendMessage(item, WM_DOWN, key, lparam);
-                Thread.Sleep(100);
+                Thread.Sleep(50);
                 int x = 0x3f + 0x80;//0xbf
                 int scUp =0x1 << 31 | 0x1 ;
                 lp = scUp | 0xbf << 16;
@@ -439,7 +445,7 @@ namespace ControlForm
             textBox8.Text = p.Y.ToString();
             selectColor = GetPixel(hdc, p);
             selectPoint1 = p;
-            LogF(string.Format("F5选色点！{0} x = {1}, y = {2}", selectColor.ToString(), textBox7.Text, textBox8.Text));
+            //LogF(string.Format("F5选色点！{0} x = {1}, y = {2}", selectColor.ToString(), textBox7.Text, textBox8.Text));
 
         }
 
@@ -505,7 +511,7 @@ namespace ControlForm
             textBox3.Text = p.Y.ToString();
             selectColor2 = GetPixel(hdc, p);
             selectPoint2 = p;
-            LogF(string.Format("F7选色点！{0}", selectColor2.ToString()));
+            //LogF(string.Format("F7选色点！{0}", selectColor2.ToString()));
 
         }
 
@@ -529,7 +535,7 @@ namespace ControlForm
         {
             // 新建一个和屏幕大小相同的图片
             Bitmap CatchBmp = new Bitmap(Screen.AllScreens[0].Bounds.Width, Screen.AllScreens[0].Bounds.Height);
-
+            
             // 创建一个画板，让我们可以在画板上画图
             // 这个画板也就是和屏幕大小一样大的图片
             // 我们可以通过Graphics这个类在这个空白图片上画图
@@ -549,6 +555,9 @@ namespace ControlForm
             if (cutter.ShowDialog() == DialogResult.OK)
             {
                 Point p = cutter.DownPoint;
+
+                Color c = CatchBmp.GetPixel(p.X, p.Y);
+                //LogF(string.Format("选择判定释放点 x = {0}, y = {1},  r={2}, g={3}, b={4}", p.X.ToString(), p.Y.ToString(), c.R, c.G, c.B));
 
                 return p;
 
@@ -670,6 +679,7 @@ namespace ControlForm
 
         private static int LogF(string slog)
         {
+            return 0;
             string _logDir = "c:\\ConvexEditer\\";
             string _logFile = "log_";
             string dt = DateTime.Now.ToString("yyyy_MM_dd");
