@@ -56,7 +56,7 @@ namespace ControlForm
         private int onceCdTime = 0;
         private int countDown = 0;
         private int f11Times = 0;
-        private int f11CD = 1000;
+        private int f11CD = 0;
 
         //WM_CHAR消息是俘获某一个字符的消息
         public static int WM_CHAR = 0x102;
@@ -94,10 +94,14 @@ namespace ControlForm
 
         bool isClick = false;
 
+
+        private MouseControl mouseControl;
+
         public AutoKey()
         {
             InitializeComponent();
             hdc = GetDC(new IntPtr(0));
+            mouseControl = new MouseControl();
         }
 
         private void btnStart_Click(object sender, EventArgs e)
@@ -177,16 +181,16 @@ namespace ControlForm
 
         public static void ClickKeyF11(byte key)
         {
-            keybd_event(0x80, 0x45, 0, 0);
+            keybd_event(0x7A, 0x57, 0, 0);
             Thread.Sleep(50);
-            keybd_event(0x80, 0xc5, 0x0002, 0);
+            keybd_event(0x7A, 0xd7, 0x0002, 0);
         }
 
         public static void ClickKeyF12(byte key)
         {
-            keybd_event(0x81, 0x46, 0, 0);//75 76 77 78 79 80 81
+            keybd_event(0x7B, 0x58, 0, 0);//75 76 77 78 79 80 81
             Thread.Sleep(50);
-            keybd_event(0x81, 0xc6, 0x0002, 0);
+            keybd_event(0x7B, 0xd8, 0x0002, 0);
         }
 
         public static int GetScanKey(byte key)
@@ -266,8 +270,8 @@ namespace ControlForm
                         {
                             ClickKey(valKey4);
                             countDown = onceCdTime;
-                            f11Times = 2;
-                            f11CD = 1000;
+                            if(f11Times == 0)
+                                f11Times = 3;
 
                         }
                     }
@@ -278,9 +282,8 @@ namespace ControlForm
                 {
                     if (f11CD <= 0)
                     {
-                        ClickKeyF12(0);
+                        ClickKeyF11(0);
                         f11Times--;
-                        f11CD = 1000;
                     }
                 }
 
@@ -717,5 +720,14 @@ namespace ControlForm
             return 0;
         }
 
+        private void button8_Click(object sender, EventArgs e)
+        {
+            mouseControl.StartUpdate();
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            mouseControl.StopUpdate();
+        }
     }
 }

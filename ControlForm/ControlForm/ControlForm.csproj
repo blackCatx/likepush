@@ -58,6 +58,7 @@
       <DependentUpon>Cutter.cs</DependentUpon>
     </Compile>
     <Compile Include="FindRedColor.cs" />
+    <Compile Include="MouseControl.cs" />
     <Compile Include="SendForm.cs">
       <SubType>Form</SubType>
     </Compile>
